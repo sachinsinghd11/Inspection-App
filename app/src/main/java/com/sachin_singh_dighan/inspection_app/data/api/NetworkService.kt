@@ -12,6 +12,7 @@ import javax.inject.Singleton
 @Singleton
 interface NetworkService {
 
+
     @POST("/api/register")
     suspend fun registerUser(@Body credentials: Authentication): Authentication
 

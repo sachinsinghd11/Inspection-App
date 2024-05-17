@@ -11,9 +11,13 @@ import com.sachin_singh_dighan.inspection_app.utils.logger.AppLogger
 import com.sachin_singh_dighan.inspection_app.utils.logger.Logger
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+
 
 @Module
 class ApplicationModule(private val application: InspectionApplication) {
@@ -24,11 +28,11 @@ class ApplicationModule(private val application: InspectionApplication) {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl() = "http://127.0.0.1:5001"
+    fun provideBaseUrl() = "http://192.168.1.60"
 
     @Provides
     @Singleton
-    fun provideGsonFactoryConvertor(): GsonConverterFactory = GsonConverterFactory.create()
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @Singleton
@@ -36,7 +40,18 @@ class ApplicationModule(private val application: InspectionApplication) {
         @BaseUrl baseUrl: String,
         gsonConverterFactory: GsonConverterFactory,
     ): NetworkService {
-        return Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(gsonConverterFactory).build()
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .build()
+        return Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(gsonConverterFactory)
+            .client(client).build()
             .create(NetworkService::class.java)
     }
 

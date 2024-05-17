@@ -9,14 +9,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthenticationRepository @Inject constructor(private val networkService: NetworkService) {
-    fun registerUser(credentials: Authentication): Flow<Authentication> {
-        return flow {
-            emit(networkService.registerUser(credentials))
-        }.map {
-            it
-        }
-    }
+class LoginRepository @Inject constructor(private val networkService: NetworkService) {
 
     fun loginUser(credentials: Authentication): Flow<Authentication> {
         return flow {

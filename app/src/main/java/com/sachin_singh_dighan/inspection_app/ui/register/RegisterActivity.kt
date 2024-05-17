@@ -1,62 +1,61 @@
-package com.sachin_singh_dighan.inspection_app.ui.login
+package com.sachin_singh_dighan.inspection_app.ui.register
 
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sachin_singh_dighan.inspection_app.InspectionApplication
+import com.sachin_singh_dighan.inspection_app.R
 import com.sachin_singh_dighan.inspection_app.data.model.Authentication
-import com.sachin_singh_dighan.inspection_app.databinding.ActivityLoginBinding
+import com.sachin_singh_dighan.inspection_app.databinding.ActivityRegisterBinding
 import com.sachin_singh_dighan.inspection_app.di.component.DaggerActivityComponent
 import com.sachin_singh_dighan.inspection_app.di.module.ActivityModule
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
-import com.sachin_singh_dighan.inspection_app.ui.register.RegisterActivity
+import com.sachin_singh_dighan.inspection_app.ui.login.LoginActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     companion object{
-        fun getInstance(context: Context): Intent {
-            return Intent(context, LoginActivity::class.java)
+        fun getInstance(context: Context): Intent{
+            return Intent(context, RegisterActivity::class.java)
         }
     }
     @Inject
-    lateinit var viewModel: LoginViewModel
+    lateinit var viewModel: RegisterViewModel
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding:ActivityRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupUI()
         setObserver()
     }
 
+
     private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as InspectionApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
+        DaggerActivityComponent.builder().applicationComponent((application as InspectionApplication).applicationComponent).activityModule(
+            ActivityModule(this)).build().injectRegisterActivity(this)
     }
 
     private fun setupUI() {
-        binding.buttonLogin.setOnClickListener {
+        binding.buttonRegister.setOnClickListener {
             val email = binding.editEmail.editText?.text?.toString()?.trim()
             val password = binding.editPassword.editText?.text?.toString()?.trim()
-            viewModel.loginUser(email ?: "", password ?: "")
+            viewModel.registerUser(email ?: "", password ?: "")
         }
-        binding.buttonRegister.setOnClickListener {
-            startActivity(RegisterActivity.getInstance(this@LoginActivity))
+        binding.buttonLogin.setOnClickListener {
+            startActivity(LoginActivity.getInstance(this@RegisterActivity))
         }
-
     }
-
     private fun setObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -75,14 +74,13 @@ class LoginActivity : AppCompatActivity() {
 
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@LoginActivity, it.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@RegisterActivity, it.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
             }
         }
     }
-
     private fun getUser(credentials: Authentication) {
         if (credentials.email.isNotEmpty() && credentials.password.isNotEmpty()) {
             //Navigate to HomeScreen
