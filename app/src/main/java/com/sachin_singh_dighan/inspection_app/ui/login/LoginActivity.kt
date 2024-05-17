@@ -15,6 +15,7 @@ import com.sachin_singh_dighan.inspection_app.databinding.ActivityLoginBinding
 import com.sachin_singh_dighan.inspection_app.di.component.DaggerActivityComponent
 import com.sachin_singh_dighan.inspection_app.di.module.ActivityModule
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
+import com.sachin_singh_dighan.inspection_app.ui.inspection.InspectionActivity
 import com.sachin_singh_dighan.inspection_app.ui.register.RegisterActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -53,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.buttonRegister.setOnClickListener {
             startActivity(RegisterActivity.getInstance(this@LoginActivity))
+            finish()
         }
 
     }
@@ -84,9 +86,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getUser(credentials: Authentication) {
-        if (credentials.email.isNotEmpty() && credentials.password.isNotEmpty()) {
+        //if (credentials.email.isNotEmpty() && credentials.password.isNotEmpty()) {
             //Navigate to HomeScreen
-        }
+            startActivity(InspectionActivity.getInstance(this@LoginActivity))
+            finish()
+        //}
 
     }
 }

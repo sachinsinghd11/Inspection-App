@@ -3,10 +3,12 @@ package com.sachin_singh_dighan.inspection_app.di.module
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
 import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
 import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepository
 import com.sachin_singh_dighan.inspection_app.di.ActivityContext
 import com.sachin_singh_dighan.inspection_app.ui.base.ViewModelProviderFactory
+import com.sachin_singh_dighan.inspection_app.ui.inspection.InspectionViewModel
 import com.sachin_singh_dighan.inspection_app.ui.login.LoginViewModel
 import com.sachin_singh_dighan.inspection_app.ui.register.RegisterViewModel
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
@@ -41,5 +43,16 @@ class ActivityModule(private val activity: AppCompatActivity) {
         return ViewModelProvider(activity, ViewModelProviderFactory(RegisterViewModel::class) {
             RegisterViewModel(registerRepository, networkHelper, logger)
         })[RegisterViewModel::class.java]
+    }
+
+    @Provides
+    fun provideInspectionViewModel(
+        inspectionRepository: InspectionRepository,
+        networkHelper: NetworkHelper,
+        logger: Logger
+    ): InspectionViewModel {
+        return ViewModelProvider(activity, ViewModelProviderFactory(InspectionViewModel::class) {
+            InspectionViewModel(inspectionRepository, networkHelper, logger)
+        })[InspectionViewModel::class.java]
     }
 }

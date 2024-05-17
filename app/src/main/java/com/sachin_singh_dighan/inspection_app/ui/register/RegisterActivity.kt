@@ -54,6 +54,7 @@ class RegisterActivity : AppCompatActivity() {
         }
         binding.buttonLogin.setOnClickListener {
             startActivity(LoginActivity.getInstance(this@RegisterActivity))
+            finish()
         }
     }
     private fun setObserver() {

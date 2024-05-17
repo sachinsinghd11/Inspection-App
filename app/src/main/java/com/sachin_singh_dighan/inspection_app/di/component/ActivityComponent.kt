@@ -2,6 +2,7 @@ package com.sachin_singh_dighan.inspection_app.di.component
 
 import com.sachin_singh_dighan.inspection_app.di.ActivityScope
 import com.sachin_singh_dighan.inspection_app.di.module.ActivityModule
+import com.sachin_singh_dighan.inspection_app.ui.inspection.InspectionActivity
 import com.sachin_singh_dighan.inspection_app.ui.login.LoginActivity
 import com.sachin_singh_dighan.inspection_app.ui.register.RegisterActivity
 import dagger.Component
@@ -12,4 +13,6 @@ interface ActivityComponent {
     fun inject(activity: LoginActivity)
 
     fun injectRegisterActivity(activity: RegisterActivity)
+
+    fun injectInspectionActivity(activity: InspectionActivity)
 }

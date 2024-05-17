@@ -2,6 +2,7 @@ package com.sachin_singh_dighan.inspection_app.di.component
 
 import com.sachin_singh_dighan.inspection_app.InspectionApplication
 import com.sachin_singh_dighan.inspection_app.data.api.NetworkService
+import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
 import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
 import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepository
 import com.sachin_singh_dighan.inspection_app.di.module.ApplicationModule
@@ -17,6 +18,7 @@ interface ApplicationComponent {
     fun getNetworkService(): NetworkService
     fun getLoginRepository(): LoginRepository
     fun getRegisterRepository(): RegisterRepository
+    fun getInspectionRepository(): InspectionRepository
     fun getNetworkHelper(): NetworkHelper
     fun getLogger(): Logger
 
