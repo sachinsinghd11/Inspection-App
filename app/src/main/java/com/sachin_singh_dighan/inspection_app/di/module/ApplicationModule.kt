@@ -5,6 +5,8 @@ import com.sachin_singh_dighan.inspection_app.InspectionApplication
 import com.sachin_singh_dighan.inspection_app.data.api.NetworkService
 import com.sachin_singh_dighan.inspection_app.di.ApplicationContext
 import com.sachin_singh_dighan.inspection_app.di.BaseUrl
+import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
+import com.sachin_singh_dighan.inspection_app.utils.NetworkHelperImpl
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -34,5 +36,11 @@ class ApplicationModule(private val application: InspectionApplication) {
     ): NetworkService {
         return Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(gsonConverterFactory).build()
             .create(NetworkService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelperImpl(context)
     }
 }
