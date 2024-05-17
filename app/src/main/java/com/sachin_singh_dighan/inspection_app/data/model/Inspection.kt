@@ -3,6 +3,8 @@ package com.sachin_singh_dighan.inspection_app.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Inspection(
+    @SerializedName("error")
+    val error: Error? = null,
     @SerializedName("id")
     val id: Int,
     @SerializedName("inspectionType")
