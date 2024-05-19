@@ -28,7 +28,7 @@ class ApplicationModule(private val application: InspectionApplication) {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl() = "http://192.168.1.60"
+    fun provideBaseUrl() = "http://192.168.48.60"//127.0.0.1:5001"
 
     @Provides
     @Singleton

@@ -8,9 +8,9 @@ data class Inspection(
     @SerializedName("id")
     val id: Int,
     @SerializedName("inspectionType")
-    val inspectionType: List<InspectionType>,
+    val inspectionType: InspectionType,
     @SerializedName("area")
-    val area: List<Area>,
+    val area: Area,
     @SerializedName("survey")
-    val survey: List<Survey>,
+    val survey: Survey,
 )

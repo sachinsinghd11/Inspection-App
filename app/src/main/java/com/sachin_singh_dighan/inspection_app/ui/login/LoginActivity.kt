@@ -50,7 +50,9 @@ class LoginActivity : AppCompatActivity() {
         binding.buttonLogin.setOnClickListener {
             val email = binding.editEmail.editText?.text?.toString()?.trim()
             val password = binding.editPassword.editText?.text?.toString()?.trim()
-            viewModel.loginUser(email ?: "", password ?: "")
+            //viewModel.loginUser(email ?: "", password ?: "")
+            startActivity(InspectionActivity.getInstance(this@LoginActivity))
+            finish()
         }
         binding.buttonRegister.setOnClickListener {
             startActivity(RegisterActivity.getInstance(this@LoginActivity))

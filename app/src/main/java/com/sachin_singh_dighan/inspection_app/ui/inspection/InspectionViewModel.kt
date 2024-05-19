@@ -2,10 +2,9 @@ package com.sachin_singh_dighan.inspection_app.ui.inspection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sachin_singh_dighan.inspection_app.data.model.Authentication
+import com.sachin_singh_dighan.inspection_app.data.model.AnswerChoice
 import com.sachin_singh_dighan.inspection_app.data.model.Inspection
 import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
-import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper

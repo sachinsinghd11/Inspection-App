@@ -10,5 +10,5 @@ data class Question(
     @SerializedName("answerChoices")
     val answerChoices: List<AnswerChoice>,
     @SerializedName("selectedAnswerChoiceId")
-    val selectedAnswerChoiceId: Int,
+    val selectedAnswerChoiceId: Int?,
 )

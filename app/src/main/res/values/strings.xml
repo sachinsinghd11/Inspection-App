@@ -13,4 +13,10 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
 
+    <string name="hint_title">Title</string>
+    <string name="hint_sub_title">SubTitle</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_submit">Submit</string>
+    <string name="hint_questions">Questions</string>
+
 </resources>

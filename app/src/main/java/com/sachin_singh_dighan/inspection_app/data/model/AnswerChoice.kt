@@ -8,5 +8,5 @@ data class AnswerChoice(
     @SerializedName("name")
     val name: String,
     @SerializedName("score")
-    val score: String,
+    val score: Double,
 )
