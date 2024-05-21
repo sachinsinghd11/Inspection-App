@@ -1,6 +1,5 @@
 package com.sachin_singh_dighan.inspection_app.data.repository
 
-import android.util.Log
 import com.sachin_singh_dighan.inspection_app.data.api.NetworkService
 import com.sachin_singh_dighan.inspection_app.data.local.dao.InspectionDao
 import com.sachin_singh_dighan.inspection_app.data.local.entity.AnswerChoiceEntity
@@ -17,11 +16,10 @@ import com.sachin_singh_dighan.inspection_app.data.model.Inspection
 import com.sachin_singh_dighan.inspection_app.data.model.InspectionType
 import com.sachin_singh_dighan.inspection_app.data.model.Question
 import com.sachin_singh_dighan.inspection_app.data.model.Survey
-import com.sachin_singh_dighan.inspection_app.utils.AppConstant
 import io.realm.kotlin.ext.realmListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -35,17 +33,17 @@ class InspectionRepository @Inject constructor(
     fun fetchInspections(): Flow<InspectionEntity> {
         return flow {
 
-            //emit(networkService.startInspection())
-            emit(AppConstant.inspectionStartList)
+            emit(networkService.startInspection())
+            //emit(AppConstant.inspectionStartList)
 
-        }.
-        distinctUntilChanged().
-        map {
+        }.distinctUntilChanged().map {
             inspectionDao.deleteAll()
             inspectionDao.update(it)
             inspectionDao.findAll()
 
-            it
+            //it
+        }.flatMapLatest {
+            flow { it[0] }
         }
     }
 

@@ -16,10 +16,11 @@ class LoginRepository @Inject constructor(
 
     fun loginUser(credentials: AuthenticationEntity): Flow<AuthenticationEntity> {
         return flow {
-            emit(authenticationDao.findById(credentials.email, credentials.password))
-            //emit(networkService.loginUser(credentials))
+            //emit(authenticationDao.findById(credentials.email, credentials.password))
+            emit(networkService.loginUser(credentials))
         }.map {
-            return@map it ?: AuthenticationEntity()
+           // return@map it ?: AuthenticationEntity()
+            it
         }
     }
 }

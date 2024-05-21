@@ -16,11 +16,12 @@ class RegisterRepository @Inject constructor(
 ) {
     fun registerUser(credentials: AuthenticationEntity): Flow<AuthenticationEntity> {
         return flow {
-            authenticationDao.insert(credentials)
-            emit(authenticationDao.findAll())
-            //emit(networkService.registerUser(credentials))
+            //authenticationDao.insert(credentials)
+            //emit(authenticationDao.findAll())
+            emit(networkService.registerUser(credentials))
         }.map {
-            it[0]
+            //it[0]
+            it
         }
     }
 }

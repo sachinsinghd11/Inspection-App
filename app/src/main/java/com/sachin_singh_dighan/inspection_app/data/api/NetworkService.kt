@@ -1,7 +1,7 @@
 package com.sachin_singh_dighan.inspection_app.data.api
 
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
 import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionEntity
-import com.sachin_singh_dighan.inspection_app.data.model.Authentication
 import com.sachin_singh_dighan.inspection_app.data.model.Inspection
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -15,10 +15,10 @@ interface NetworkService {
 
 
     @POST("/api/register")
-    suspend fun registerUser(@Body credentials: Authentication): Authentication
+    suspend fun registerUser(@Body credentials: AuthenticationEntity): AuthenticationEntity
 
     @POST("/api/login")
-    suspend fun loginUser(@Body credentials: Authentication): Authentication
+    suspend fun loginUser(@Body credentials: AuthenticationEntity): AuthenticationEntity
 
     @GET("/api/inspections/start")
     suspend fun startInspection(): InspectionEntity
