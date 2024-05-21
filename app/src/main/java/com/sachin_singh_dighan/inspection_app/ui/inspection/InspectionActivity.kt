@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sachin_singh_dighan.inspection_app.InspectionApplication
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AnswerChoiceEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.CategoryEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.QuestionEntity
 import com.sachin_singh_dighan.inspection_app.data.model.AnswerChoice
 import com.sachin_singh_dighan.inspection_app.data.model.Category
 import com.sachin_singh_dighan.inspection_app.data.model.Question
@@ -20,6 +23,7 @@ import com.sachin_singh_dighan.inspection_app.databinding.ActivityInspectionBind
 import com.sachin_singh_dighan.inspection_app.di.component.DaggerActivityComponent
 import com.sachin_singh_dighan.inspection_app.di.module.ActivityModule
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
+import com.sachin_singh_dighan.inspection_app.ui.login.LoginActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -87,6 +91,10 @@ class InspectionActivity : AppCompatActivity() {
 
         answerChoicesAdapter.itemClickListener = { _, answerChoices ->
         }
+
+        binding.btnSubmit.setOnClickListener {
+            startActivity( LoginActivity.getInstance(this@InspectionActivity))
+        }
     }
 
     private fun setObserver() {
@@ -98,8 +106,8 @@ class InspectionActivity : AppCompatActivity() {
                             //binding.progressBar.visibility = View.GONE
                             it.data.let { inspection ->
                                 binding.tvArea.text =
-                                    "Take inspection for ${inspection.area.name} in ${inspection.inspectionType.name}"
-                                getInspection(inspection.survey.categories)
+                                    "Take inspection for ${inspection.area?.name} in ${inspection.inspectionType?.name?:""}"
+                                getInspection(inspection.survey?.categories?: emptyList())
                             }
                         }
 
@@ -129,19 +137,19 @@ class InspectionActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getInspection(categories: List<Category>) {
+    private fun getInspection(categories: List<CategoryEntity>) {
         adapter.addData(categories)
         //adapter.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getQuestion(question: List<Question>) {
+    private fun getQuestion(question: List<QuestionEntity>) {
         questionsAdapter.addData(question)
         //adapter.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun getAnswerChoice(answerChoice: List<AnswerChoice>) {
+    private fun getAnswerChoice(answerChoice: List<AnswerChoiceEntity>) {
         answerChoicesAdapter.addData(answerChoice)
     }
 }

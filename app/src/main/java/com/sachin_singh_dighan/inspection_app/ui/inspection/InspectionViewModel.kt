@@ -2,8 +2,7 @@ package com.sachin_singh_dighan.inspection_app.ui.inspection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sachin_singh_dighan.inspection_app.data.model.AnswerChoice
-import com.sachin_singh_dighan.inspection_app.data.model.Inspection
+import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionEntity
 import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
@@ -19,14 +18,14 @@ class InspectionViewModel(
     private val inspectionRepository: InspectionRepository,
     private val networkHelper: NetworkHelper,
     private val logger: Logger
-) : ViewModel()  {
+) : ViewModel() {
 
     companion object {
         const val TAG = "InspectionViewModel"
     }
 
-    private val _uiState = MutableStateFlow<UiState<Inspection>>(UiState.Loading)
-    val uiState: MutableStateFlow<UiState<Inspection>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<InspectionEntity>>(UiState.Loading)
+    val uiState: MutableStateFlow<UiState<InspectionEntity>> = _uiState
 
     init {
         fetchInspection()

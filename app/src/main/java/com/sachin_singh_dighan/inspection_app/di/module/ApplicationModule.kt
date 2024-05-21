@@ -3,6 +3,18 @@ package com.sachin_singh_dighan.inspection_app.di.module
 import android.content.Context
 import com.sachin_singh_dighan.inspection_app.InspectionApplication
 import com.sachin_singh_dighan.inspection_app.data.api.NetworkService
+import com.sachin_singh_dighan.inspection_app.data.local.dao.AuthenticationDao
+import com.sachin_singh_dighan.inspection_app.data.local.dao.AuthenticationImpl
+import com.sachin_singh_dighan.inspection_app.data.local.dao.InspectionDao
+import com.sachin_singh_dighan.inspection_app.data.local.dao.InspectionDaoImpl
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AnswerChoiceEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AreaEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.CategoryEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionTypeEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.QuestionEntity
+import com.sachin_singh_dighan.inspection_app.data.local.entity.SurveyEntity
 import com.sachin_singh_dighan.inspection_app.di.ApplicationContext
 import com.sachin_singh_dighan.inspection_app.di.BaseUrl
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
@@ -11,6 +23,8 @@ import com.sachin_singh_dighan.inspection_app.utils.logger.AppLogger
 import com.sachin_singh_dighan.inspection_app.utils.logger.Logger
 import dagger.Module
 import dagger.Provides
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,7 +42,7 @@ class ApplicationModule(private val application: InspectionApplication) {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl() = "http://192.168.48.60"//127.0.0.1:5001"
+    fun provideBaseUrl() = "http://192.168.146.60"//127.0.0.1:5001"
 
     @Provides
     @Singleton
@@ -66,4 +80,38 @@ class ApplicationModule(private val application: InspectionApplication) {
     fun provideLogger(): Logger {
         return AppLogger()
     }
+
+    @Provides
+    fun provideRealmConfiguration(): RealmConfiguration = RealmConfiguration.create(
+        schema = setOf(
+            AuthenticationEntity::class,
+            InspectionEntity::class,
+            AreaEntity::class,
+            InspectionTypeEntity::class,
+            SurveyEntity::class,
+            CategoryEntity::class,
+            QuestionEntity::class,
+            AnswerChoiceEntity::class,
+        ),
+    )
+
+
+    @Singleton
+    @Provides
+    fun provideRealm(
+        realmConfiguration: RealmConfiguration
+    ): Realm {
+        return Realm.open(realmConfiguration)
+    }
+
+    @Provides
+    fun provideInspectionDao(realm: Realm): InspectionDao {
+        return InspectionDaoImpl(realm)
+    }
+
+    @Provides
+    fun provideAuthenticationDao(realm: Realm): AuthenticationDao {
+        return AuthenticationImpl(realm)
+    }
+
 }

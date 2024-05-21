@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sachin_singh_dighan.inspection_app.data.model.Category
+import com.sachin_singh_dighan.inspection_app.data.local.entity.CategoryEntity
 import com.sachin_singh_dighan.inspection_app.databinding.LayoutInspectionBinding
 import com.sachin_singh_dighan.inspection_app.utils.ItemClickListener
 import com.sachin_singh_dighan.inspection_app.utils.setNestedUi
 
 class InspectionAdapter(
-    private val categoryList: ArrayList<Category>
+    private val categoryList: ArrayList<CategoryEntity>
 ) : RecyclerView.Adapter<InspectionAdapter.DataViewHolder>() {
 
-    lateinit var itemClickListener: ItemClickListener<Category>
+    lateinit var itemClickListener: ItemClickListener<CategoryEntity>
 
     lateinit var setNestedUi: setNestedUi<RecyclerView>
 
@@ -21,8 +21,8 @@ class InspectionAdapter(
         RecyclerView.ViewHolder(binding.root) {
         private var isSelected = false
         fun bind(
-            category: Category,
-            itemClickListener: ItemClickListener<Category>,
+            category: CategoryEntity,
+            itemClickListener: ItemClickListener<CategoryEntity>,
             setNestedUi: setNestedUi<RecyclerView>
         ) {
             binding.tvCategory.text = category.name
@@ -57,7 +57,7 @@ class InspectionAdapter(
         holder.bind(categoryList[position], itemClickListener, setNestedUi)
     }
 
-    fun addData(list: List<Category>) {
+    fun addData(list: List<CategoryEntity>) {
         categoryList.clear()
         categoryList.addAll(list)
     }

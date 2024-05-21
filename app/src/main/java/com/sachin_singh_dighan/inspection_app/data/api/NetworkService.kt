@@ -1,5 +1,6 @@
 package com.sachin_singh_dighan.inspection_app.data.api
 
+import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionEntity
 import com.sachin_singh_dighan.inspection_app.data.model.Authentication
 import com.sachin_singh_dighan.inspection_app.data.model.Inspection
 import retrofit2.http.Body
@@ -20,7 +21,7 @@ interface NetworkService {
     suspend fun loginUser(@Body credentials: Authentication): Authentication
 
     @GET("/api/inspections/start")
-    suspend fun startInspection(): Inspection
+    suspend fun startInspection(): InspectionEntity
 
     @POST("/api/inspections/submit")
     suspend fun submitInspection(@Body inspection: Inspection): Inspection

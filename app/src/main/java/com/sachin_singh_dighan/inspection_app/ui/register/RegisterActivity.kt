@@ -2,16 +2,15 @@ package com.sachin_singh_dighan.inspection_app.ui.register
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sachin_singh_dighan.inspection_app.InspectionApplication
-import com.sachin_singh_dighan.inspection_app.R
-import com.sachin_singh_dighan.inspection_app.data.model.Authentication
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
 import com.sachin_singh_dighan.inspection_app.databinding.ActivityRegisterBinding
 import com.sachin_singh_dighan.inspection_app.di.component.DaggerActivityComponent
 import com.sachin_singh_dighan.inspection_app.di.module.ActivityModule
@@ -22,15 +21,16 @@ import javax.inject.Inject
 
 class RegisterActivity : AppCompatActivity() {
 
-    companion object{
-        fun getInstance(context: Context): Intent{
+    companion object {
+        fun getInstance(context: Context): Intent {
             return Intent(context, RegisterActivity::class.java)
         }
     }
+
     @Inject
     lateinit var viewModel: RegisterViewModel
 
-    private lateinit var binding:ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         super.onCreate(savedInstanceState)
@@ -42,8 +42,11 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun injectDependencies() {
-        DaggerActivityComponent.builder().applicationComponent((application as InspectionApplication).applicationComponent).activityModule(
-            ActivityModule(this)).build().injectRegisterActivity(this)
+        DaggerActivityComponent.builder()
+            .applicationComponent((application as InspectionApplication).applicationComponent)
+            .activityModule(
+                ActivityModule(this)
+            ).build().injectRegisterActivity(this)
     }
 
     private fun setupUI() {
@@ -57,6 +60,7 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
     }
+
     private fun setObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -75,16 +79,19 @@ class RegisterActivity : AppCompatActivity() {
 
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@RegisterActivity, it.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@RegisterActivity, it.message, Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                 }
             }
         }
     }
-    private fun getUser(credentials: Authentication) {
+
+    private fun getUser(credentials: AuthenticationEntity) {
         if (credentials.email.isNotEmpty() && credentials.password.isNotEmpty()) {
-            //Navigate to HomeScreen
+            Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+            startActivity(LoginActivity.getInstance(this@RegisterActivity))
         }
 
     }

@@ -1,8 +1,10 @@
 package com.sachin_singh_dighan.inspection_app.ui.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sachin_singh_dighan.inspection_app.data.model.Authentication
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
 import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
@@ -12,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -25,9 +26,9 @@ class LoginViewModel(
         const val TAG = "LoginViewModel"
     }
 
-    private val _uiState = MutableStateFlow<UiState<Authentication>>(UiState.Loading)
-    val uiState: MutableStateFlow<UiState<Authentication>> = _uiState
-
+    private val _uiState = MutableStateFlow<UiState<AuthenticationEntity>>(UiState.Loading)
+    val uiState: MutableStateFlow<UiState<AuthenticationEntity>> = _uiState
+    lateinit var sharedPreferences: SharedPreferences
 
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
@@ -48,7 +49,10 @@ class LoginViewModel(
         }
     }
 
-    private fun generateAuthenticationObject(email: String, password: String): Authentication {
-        return Authentication(email = email, password = password)
+    private fun generateAuthenticationObject(
+        email: String,
+        password: String
+    ): AuthenticationEntity {
+        return AuthenticationEntity(email = email, password = password)
     }
 }

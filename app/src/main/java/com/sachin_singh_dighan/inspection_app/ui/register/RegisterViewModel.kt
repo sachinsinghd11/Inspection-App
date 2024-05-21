@@ -2,8 +2,7 @@ package com.sachin_singh_dighan.inspection_app.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sachin_singh_dighan.inspection_app.data.model.Authentication
-import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
+import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
 import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepository
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
@@ -19,14 +18,14 @@ class RegisterViewModel(
     private val registerRepository: RegisterRepository,
     private val networkHelper: NetworkHelper,
     private val logger: Logger
-) : ViewModel()  {
+) : ViewModel() {
 
     companion object {
         const val TAG = "RegisterViewModel"
     }
 
-    private val _uiState = MutableStateFlow<UiState<Authentication>>(UiState.Loading)
-    val uiState: MutableStateFlow<UiState<Authentication>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<AuthenticationEntity>>(UiState.Loading)
+    val uiState: MutableStateFlow<UiState<AuthenticationEntity>> = _uiState
 
 
     fun registerUser(email: String, password: String) {
@@ -48,7 +47,10 @@ class RegisterViewModel(
         }
     }
 
-    private fun generateAuthenticationObject(email: String, password: String): Authentication {
-        return Authentication(email = email, password = password)
+    private fun generateAuthenticationObject(
+        email: String,
+        password: String
+    ): AuthenticationEntity {
+        return AuthenticationEntity(email = email, password = password)
     }
 }
