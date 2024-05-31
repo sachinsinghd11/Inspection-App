@@ -6,6 +6,7 @@ import com.sachin_singh_dighan.inspection_app.data.local.entity.InspectionEntity
 import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
+import com.sachin_singh_dighan.inspection_app.utils.DispatcherProvider
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
 import com.sachin_singh_dighan.inspection_app.utils.logger.Logger
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class InspectionViewModel(
     private val inspectionRepository: InspectionRepository,
     private val networkHelper: NetworkHelper,
-    private val logger: Logger
+    private val logger: Logger,
+    private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
     companion object {
@@ -35,7 +37,7 @@ class InspectionViewModel(
         viewModelScope.launch {
             if (networkHelper.isNetworkAvailable()) {
                 inspectionRepository.fetchInspections()
-                    .flowOn(Dispatchers.IO)
+                    .flowOn(dispatcherProvider.io)
                     .catch { e ->
                         _uiState.value = UiState.Error(e.toString())
                         logger.d(TAG, e.toString())

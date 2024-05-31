@@ -17,6 +17,8 @@ import com.sachin_singh_dighan.inspection_app.data.local.entity.QuestionEntity
 import com.sachin_singh_dighan.inspection_app.data.local.entity.SurveyEntity
 import com.sachin_singh_dighan.inspection_app.di.ApplicationContext
 import com.sachin_singh_dighan.inspection_app.di.BaseUrl
+import com.sachin_singh_dighan.inspection_app.utils.DefaultDispatcherProvider
+import com.sachin_singh_dighan.inspection_app.utils.DispatcherProvider
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelperImpl
 import com.sachin_singh_dighan.inspection_app.utils.logger.AppLogger
@@ -42,7 +44,7 @@ class ApplicationModule(private val application: InspectionApplication) {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl() = "http://192.168.146.60"//127.0.0.1:5001"
+    fun provideBaseUrl() = "http://192.168.126.1"//127.0.0.1:5001"
 
     @Provides
     @Singleton
@@ -113,5 +115,9 @@ class ApplicationModule(private val application: InspectionApplication) {
     fun provideAuthenticationDao(realm: Realm): AuthenticationDao {
         return AuthenticationImpl(realm)
     }
+
+    @Provides
+    @Singleton
+    fun provideDispatcherProvider():DispatcherProvider = DefaultDispatcherProvider()
 
 }
