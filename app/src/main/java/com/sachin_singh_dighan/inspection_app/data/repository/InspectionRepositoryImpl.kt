@@ -16,6 +16,7 @@ import com.sachin_singh_dighan.inspection_app.data.model.Inspection
 import com.sachin_singh_dighan.inspection_app.data.model.InspectionType
 import com.sachin_singh_dighan.inspection_app.data.model.Question
 import com.sachin_singh_dighan.inspection_app.data.model.Survey
+import com.sachin_singh_dighan.inspection_app.domain.Repository.InspectionRepository
 import io.realm.kotlin.ext.realmListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -26,11 +27,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InspectionRepository @Inject constructor(
+class InspectionRepositoryImpl @Inject constructor(
     private val networkService: NetworkService,
     private val inspectionDao: InspectionDao
-) {
-    fun fetchInspections(): Flow<InspectionEntity> {
+) : InspectionRepository{
+    override fun fetchInspections(): Flow<InspectionEntity> {
         return flow {
 
             emit(networkService.startInspection())

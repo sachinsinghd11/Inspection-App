@@ -3,7 +3,8 @@ package com.sachin_singh_dighan.inspection_app.ui.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
-import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepository
+import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepositoryImpl
+import com.sachin_singh_dighan.inspection_app.domain.usecases.RegisterUseCase
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
-    private val registerRepository: RegisterRepository,
+    private val registerUseCase: RegisterUseCase,
     private val networkHelper: NetworkHelper,
     private val logger: Logger
 ) : ViewModel() {
@@ -31,7 +32,7 @@ class RegisterViewModel(
     fun registerUser(email: String, password: String) {
         viewModelScope.launch {
             if (networkHelper.isNetworkAvailable()) {
-                registerRepository.registerUser(generateAuthenticationObject(email, password))
+                registerUseCase.invoke(generateAuthenticationObject(email, password))
                     .flowOn(Dispatchers.IO)
                     .catch { e ->
                         _uiState.value = UiState.Error(e.toString())

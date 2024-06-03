@@ -3,6 +3,7 @@ package com.sachin_singh_dighan.inspection_app.data.repository
 import com.sachin_singh_dighan.inspection_app.data.api.NetworkService
 import com.sachin_singh_dighan.inspection_app.data.local.dao.AuthenticationDao
 import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
+import com.sachin_singh_dighan.inspection_app.domain.Repository.RegisterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -10,16 +11,17 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor(
-    private val networkService: NetworkService, private val authenticationDao: AuthenticationDao
-) {
-
-    fun loginUser(credentials: AuthenticationEntity): Flow<AuthenticationEntity> {
+class RegisterRepositoryImpl @Inject constructor(
+    private val networkService: NetworkService,
+    private val authenticationDao: AuthenticationDao
+) : RegisterRepository{
+    override fun registerUser(credentials: AuthenticationEntity): Flow<AuthenticationEntity> {
         return flow {
-            //emit(authenticationDao.findById(credentials.email, credentials.password))
-            emit(networkService.loginUser(credentials))
+            //authenticationDao.insert(credentials)
+            //emit(authenticationDao.findAll())
+            emit(networkService.registerUser(credentials))
         }.map {
-           // return@map it ?: AuthenticationEntity()
+            //it[0]
             it
         }
     }

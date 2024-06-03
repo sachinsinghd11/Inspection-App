@@ -1,11 +1,11 @@
 package com.sachin_singh_dighan.inspection_app.ui.login
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sachin_singh_dighan.inspection_app.data.local.entity.AuthenticationEntity
-import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
+import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepositoryImpl
+import com.sachin_singh_dighan.inspection_app.domain.usecases.LoginUseCase
 import com.sachin_singh_dighan.inspection_app.ui.base.UiState
 import com.sachin_singh_dighan.inspection_app.utils.AppConstant
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val loginRepository: LoginRepository,
+    private val loginUseCase: LoginUseCase,
     private val networkHelper: NetworkHelper,
     private val logger: Logger
 ) : ViewModel() {
@@ -33,7 +33,7 @@ class LoginViewModel(
     fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             if (networkHelper.isNetworkAvailable()) {
-                loginRepository.loginUser(generateAuthenticationObject(email, password))
+                loginUseCase.invoke(generateAuthenticationObject(email, password))
                     .flowOn(Dispatchers.IO)
                     .catch { e ->
                         _uiState.value = UiState.Error(e.toString())

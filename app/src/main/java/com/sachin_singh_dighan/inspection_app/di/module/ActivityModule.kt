@@ -3,10 +3,11 @@ package com.sachin_singh_dighan.inspection_app.di.module
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepository
-import com.sachin_singh_dighan.inspection_app.data.repository.LoginRepository
-import com.sachin_singh_dighan.inspection_app.data.repository.RegisterRepository
+import com.sachin_singh_dighan.inspection_app.data.repository.InspectionRepositoryImpl
 import com.sachin_singh_dighan.inspection_app.di.ActivityContext
+import com.sachin_singh_dighan.inspection_app.domain.usecases.InspectionUseCase
+import com.sachin_singh_dighan.inspection_app.domain.usecases.LoginUseCase
+import com.sachin_singh_dighan.inspection_app.domain.usecases.RegisterUseCase
 import com.sachin_singh_dighan.inspection_app.ui.base.ViewModelProviderFactory
 import com.sachin_singh_dighan.inspection_app.ui.inspection.AnswerChoicesAdapter
 import com.sachin_singh_dighan.inspection_app.ui.inspection.InspectionAdapter
@@ -14,6 +15,7 @@ import com.sachin_singh_dighan.inspection_app.ui.inspection.InspectionViewModel
 import com.sachin_singh_dighan.inspection_app.ui.inspection.QuestionsAdapter
 import com.sachin_singh_dighan.inspection_app.ui.login.LoginViewModel
 import com.sachin_singh_dighan.inspection_app.ui.register.RegisterViewModel
+import com.sachin_singh_dighan.inspection_app.utils.DispatcherProvider
 import com.sachin_singh_dighan.inspection_app.utils.NetworkHelper
 import com.sachin_singh_dighan.inspection_app.utils.logger.Logger
 import dagger.Module
@@ -29,34 +31,35 @@ class ActivityModule(private val activity: AppCompatActivity) {
 
     @Provides
     fun provideLoginViewModel(
-        loginRepository: LoginRepository,
+        loginUseCase: LoginUseCase,
         networkHelper: NetworkHelper,
         logger: Logger
     ): LoginViewModel {
         return ViewModelProvider(activity, ViewModelProviderFactory(LoginViewModel::class) {
-            LoginViewModel(loginRepository, networkHelper, logger)
+            LoginViewModel(loginUseCase, networkHelper, logger)
         })[LoginViewModel::class.java]
     }
 
     @Provides
     fun provideRegisterViewModel(
-        registerRepository: RegisterRepository,
+        registerUseCase: RegisterUseCase,
         networkHelper: NetworkHelper,
         logger: Logger
     ): RegisterViewModel {
         return ViewModelProvider(activity, ViewModelProviderFactory(RegisterViewModel::class) {
-            RegisterViewModel(registerRepository, networkHelper, logger)
+            RegisterViewModel(registerUseCase, networkHelper, logger)
         })[RegisterViewModel::class.java]
     }
 
     @Provides
     fun provideInspectionViewModel(
-        inspectionRepository: InspectionRepository,
+        inspectionUseCase: InspectionUseCase,
         networkHelper: NetworkHelper,
-        logger: Logger
+        logger: Logger,
+        dispatcherProvider: DispatcherProvider,
     ): InspectionViewModel {
         return ViewModelProvider(activity, ViewModelProviderFactory(InspectionViewModel::class) {
-            InspectionViewModel(inspectionRepository, networkHelper, logger)
+            InspectionViewModel(inspectionUseCase, networkHelper, logger, dispatcherProvider)
         })[InspectionViewModel::class.java]
     }
 
